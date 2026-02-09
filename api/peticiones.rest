@@ -1,0 +1,176 @@
+@url=http://localhost:3001
+@token=REEMPLAZA_CON_ACCESS_TOKEN
+@refresh=REEMPLAZA_CON_REFRESH_TOKEN
+
+### Health
+GET {{url}}/health
+
+### Create a new client
+POST {{url}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "juan.perassfgsdfsez@email.com",
+  "password": "PasswordsfgsSegurasdfa123!",
+  "firstName": "Juan",
+  "lastName": "Pérez",
+  "phone": "+34 600123456"
+}
+
+### Hacer login
+POST {{url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "juan.perasdfsez@email.com",
+  "password": "PasswordSegurasdfa123!"
+}
+
+### Refresh token
+POST {{url}}/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refresh}}"
+}
+
+### Logout
+POST {{url}}/auth/logout
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refresh}}"
+}
+
+### Todos los productos
+GET {{url}}/products
+
+### Un producto en particular
+GET {{url}}/products/3
+
+### Ver carrito (auth)
+GET {{url}}/cart
+Authorization: Bearer {{token}}
+
+### Agregar item al carrito (auth)
+POST {{url}}/cart/items
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "productId": 3,
+  "quantity": 2
+}
+
+### Actualizar cantidad en carrito (auth)
+PATCH {{url}}/cart/items/3
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "quantity": 5
+}
+
+### Quitar item del carrito (auth)
+DELETE {{url}}/cart/items/3
+Authorization: Bearer {{token}}
+
+### Checkout con dirección existente (auth)
+POST {{url}}/checkout
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "addressId": 1
+}
+
+### Checkout con nueva dirección (auth)
+POST {{url}}/checkout
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "address": {
+    "label": "Casa",
+    "recipientName": "Juan Pérez",
+    "line1": "Calle Falsa 123",
+    "line2": "Piso 2",
+    "city": "Madrid",
+    "state": "Madrid",
+    "postalCode": "28001",
+    "country": "ES",
+    "isDefault": true
+  }
+}
+
+### Pagar orden (auth)
+POST {{url}}/payment/pay
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderId": 1
+}
+
+### Perfil cliente (auth)
+GET {{url}}/customers/me
+Authorization: Bearer {{token}}
+
+### Historial pedidos (auth)
+GET {{url}}/customers/orders
+Authorization: Bearer {{token}}
+
+### Detalle pedido (auth)
+GET {{url}}/customers/orders/1
+Authorization: Bearer {{token}}
+
+### Admin: listar pedidos (auth)
+GET {{url}}/admin/orders
+Authorization: Bearer {{token}}
+
+### Admin: cambiar estado pedido (auth)
+PATCH {{url}}/admin/orders/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status": "paid"
+}
+
+### Admin: listar productos (auth)
+GET {{url}}/admin/products
+Authorization: Bearer {{token}}
+
+### Admin: crear producto (auth)
+POST {{url}}/admin/products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "sku": "MUG-CLASSIC",
+  "name": "Taza clásica",
+  "description": "Cerámica 350ml.",
+  "priceCents": 1200,
+  "currency": "EUR",
+  "stock": 40,
+  "isActive": true
+}
+
+### Admin: actualizar producto (auth)
+PATCH {{url}}/admin/products/3
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "sku": "BAG-URBAN",
+  "name": "Bolsa urbana",
+  "description": "Actualizada",
+  "priceCents": 2900,
+  "currency": "EUR",
+  "stock": 55,
+  "isActive": true
+}
+
+### Admin: eliminar producto (auth)
+DELETE {{url}}/admin/products/3
+Authorization: Bearer {{token}}
