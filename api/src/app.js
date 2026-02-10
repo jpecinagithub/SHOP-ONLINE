@@ -15,23 +15,32 @@ const { notFound, errorHandler } = require("./middlewares/errorHandler");
 const app = express();
 
 app.use(helmet());
+
+// 👇 CORS CONFIG (AQUÍ VA)
 const allowedOrigins = (process.env.CORS_ORIGIN || "")
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-      return callback(new Error("Not allowed by CORS"));
-    },
-  })
-);
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Requests server-to-server / curl / health checks
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+
+    return callback(new Error(`Not allowed by CORS: ${origin}`));
+  },
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // 🔑 preflight
+
 app.use(express.json());
 
+// ROUTES
 app.use("/health", healthRoutes);
 app.use("/auth", authRoutes);
 app.use("/products", productRoutes);
@@ -41,7 +50,9 @@ app.use("/payment", paymentRoutes);
 app.use("/customers", customerRoutes);
 app.use("/admin", adminRoutes);
 
+// ERRORS
 app.use(notFound);
 app.use(errorHandler);
 
 module.exports = app;
+
