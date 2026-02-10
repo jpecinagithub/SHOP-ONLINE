@@ -6,12 +6,21 @@ import { getProductImage } from "../utils/productImage";
 function Catalog() {
   const [items, setItems] = useState([]);
   const [error, setError] = useState("");
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     listProducts()
       .then((data) => setItems(data.items || []))
       .catch((err) => setError(err.message));
   }, []);
+
+  const filtered = items.filter((product) => {
+    const q = query.trim().toLowerCase();
+    if (!q) return true;
+    const name = product.name?.toLowerCase() || "";
+    const desc = product.description?.toLowerCase() || "";
+    return name.includes(q) || desc.includes(q);
+  });
 
   return (
     <section className="page">
@@ -22,17 +31,21 @@ function Catalog() {
         </div>
         <div className="toolbar">
           <div className="search">
-            <input placeholder="Buscar producto (solo visual)" />
+            <input
+              placeholder="Buscar por nombre o descripción"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
           </div>
           <button className="btn ghost" type="button">Filtros</button>
         </div>
         {error && <p className="message warning">{error}</p>}
         <div className="grid">
-          {items.map((product) => (
+          {filtered.map((product) => (
             <article key={product.id} className="product-card">
               <div className="product-media">
-                {getProductImage(product) && (
-                  <img src={getProductImage(product)} alt={product.name} />
+                {getProductImage({ id: product.id, sku: product.sku }) && (
+                  <img src={getProductImage({ id: product.id, sku: product.sku })} alt={product.name} />
                 )}
                 <span className="media-label">{product.name}</span>
               </div>

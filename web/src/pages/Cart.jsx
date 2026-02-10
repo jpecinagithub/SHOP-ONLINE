@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getCart, updateItem, removeItem } from "../services/cart";
 import { Link } from "react-router-dom";
+import { getProductImage } from "../utils/productImage";
 
 function Cart() {
   const [cart, setCart] = useState(null);
@@ -61,9 +62,16 @@ function Cart() {
                 <ul className="list">
                   {cart.items.map((item) => (
                     <li key={item.productId} className="list-row">
-                      <div>
-                        <strong>{item.name}</strong>
-                        <span className="muted">x{item.quantity}</span>
+                      <div className="cart-item">
+                        <div className="cart-thumb">
+                          {getProductImage({ id: item.productId, sku: item.sku }) && (
+                            <img src={getProductImage({ id: item.productId, sku: item.sku })} alt={item.name} />
+                          )}
+                        </div>
+                        <div>
+                          <strong>{item.name}</strong>
+                          <span className="muted">x{item.quantity}</span>
+                        </div>
                       </div>
                       <div className="list-actions">
                         <button onClick={() => changeQty(item.productId, item.quantity + 1)}>+</button>

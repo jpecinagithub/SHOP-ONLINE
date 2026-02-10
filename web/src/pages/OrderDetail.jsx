@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getOrder } from "../services/customer";
+import { getProductImage } from "../utils/productImage";
 
 function OrderDetail() {
   const { orderId } = useParams();
@@ -35,7 +36,14 @@ function OrderDetail() {
             <ul className="list">
               {order.items.map((item) => (
                 <li key={item.productId} className="list-row">
-                  <span>{item.name}</span>
+                  <div className="cart-item">
+                    <div className="cart-thumb">
+                      {getProductImage({ id: item.productId }) && (
+                        <img src={getProductImage({ id: item.productId })} alt={item.name} />
+                      )}
+                    </div>
+                    <span>{item.name}</span>
+                  </div>
                   <span>x{item.quantity}</span>
                 </li>
               ))}

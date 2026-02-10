@@ -44,8 +44,8 @@ function ProductDetail() {
         <div className="page-grid">
           <div className="card">
             <div className="product-media">
-              {getProductImage(product) && (
-                <img src={getProductImage(product)} alt={product.name} />
+              {getProductImage({ id: product.id, sku: product.sku }) && (
+                <img src={getProductImage({ id: product.id, sku: product.sku })} alt={product.name} />
               )}
               <span className="media-label">{product.name}</span>
             </div>
@@ -62,7 +62,6 @@ function ProductDetail() {
             <p>Stock disponible: {product.stock}</p>
             <div className="hero-actions">
               <button className="btn primary" onClick={handleAdd}>Añadir al carrito</button>
-              <button className="btn ghost" type="button">Guardar</button>
             </div>
             {status && <p className="message success">{status}</p>}
           </div>

@@ -52,8 +52,8 @@ function Home() {
           {items.slice(0, 3).map((product) => (
             <article key={product.id} className="product-card">
               <div className="product-media">
-                {getProductImage(product) && (
-                  <img src={getProductImage(product)} alt={product.name} />
+                {getProductImage({ id: product.id, sku: product.sku }) && (
+                  <img src={getProductImage({ id: product.id, sku: product.sku })} alt={product.name} />
                 )}
                 <span className="media-label">{product.name}</span>
               </div>
