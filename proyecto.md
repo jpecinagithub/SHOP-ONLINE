@@ -149,12 +149,27 @@ Resultado esperado:
 ---
 
 ### Hito 12 — Deploy
-- Front: Vercel / Netlify
-- Backend: Railway
-- MySQL gestionado
+- Front: Vercel (ya desplegado)
+- Backend: Railway (API)
+- MySQL gestionado (Railway)
+
+Pasos recomendados (primera vez):
+1) Crear proyecto en Railway desde GitHub y seleccionar la carpeta `api/`.
+2) Añadir MySQL en Railway (New → Database → MySQL).
+3) Configurar variables de entorno en el servicio API:
+   - `DATABASE_URL=${MYSQL_URL}` (opción más simple)
+   - `JWT_SECRET=...`
+   - `JWT_ACCESS_TTL=15m`
+   - `JWT_REFRESH_TTL_DAYS=30`
+   - `JWT_ISSUER=shop-online`
+   - `JWT_AUDIENCE=shop-online-users`
+   - `CORS_ORIGIN=https://TU-FRONT.vercel.app`
+4) Ejecutar `database/schema.sql` en la DB gestionada.
+5) (Opcional) Ejecutar `database/seed.sql` para datos de prueba.
+6) Actualizar el front con `VITE_API_URL=https://TU-API.railway.app`.
 
 Resultado esperado:
-- App pública funcionando
+- API pública funcionando en Railway y front en Vercel consumiendo la API.
 
 ---
 
@@ -226,4 +241,3 @@ database/
 
 ## Cierre
 Este documento define **todo el proyecto de principio a fin** con foco en simplicidad, estabilidad y aprendizaje sólido. Cada hito puede desarrollarse y validarse de forma independiente antes de avanzar al siguiente.
-
