@@ -150,7 +150,7 @@ Resultado esperado:
 
 ### Hito 12 — Deploy
 - Front: Vercel / Netlify
-- Backend: Render / Fly / VPS
+- Backend: Railway
 - MySQL gestionado
 
 Resultado esperado:
