@@ -36,7 +36,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // 🔑 preflight
 
 app.use(express.json());
 
@@ -55,4 +54,3 @@ app.use(notFound);
 app.use(errorHandler);
 
 module.exports = app;
-
